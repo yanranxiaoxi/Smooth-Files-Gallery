@@ -89,7 +89,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.0.2';
+  static $version = '0.0.3';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -1175,7 +1175,7 @@ if(post('action')){
   // check updates
   } else if($action === 'check_updates'){
     header('Content-Type: application/json');
-    $data = @file_get_contents('https://cdn.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery/version.json');
+    $data = @file_get_contents('https://data.jsdelivr.com/v1/package/gh/yanranxiaoxi/Smooth-Files-Gallery');
     $json = $data ? @json_decode($data, true) : false;
     $latest = !empty($json) && isset($json['versions']) ? $json['versions'][0] : false;
     if($latest) {
