@@ -569,7 +569,7 @@ function resize_image($path, $resize_dimensions){
   $resize_ratio = max($info[0], $info[1]) / $resize_dimensions;
 
   // image_resize_max_pixels early exit
-  if(config::$config['image_resize_max_pixels'] && $info[0] * $info[1] > config::$config['image_resize_max_pixels']) error('图像分辨率 <strong>' . $info[0] . ' x ' . $info[1] . '</strong> (' . ($info[0] * $info[1]) . ' px) 超过 <strong>image_resize_max_pixels</strong>（' . config::$config['image_resize_max_pixels'] . ' 像素）。', 400);
+  if(config::$config['image_resize_max_pixels'] && $info[0] * $info[1] > config::$config['image_resize_max_pixels']) error('图像分辨率 <strong>' . $info[0] . ' x ' . $info[1] . '</strong> (' . ($info[0] * $info[1]) . ' 像素）超过 <strong>image_resize_max_pixels</strong>（' . config::$config['image_resize_max_pixels'] . ' 像素）。', 400);
 
   // header props
   $header_props .= ', ' . $info['mime'] . ', ' . $info[0] . 'x' . $info[1] . ', ratio:' . round($resize_ratio, 2);
