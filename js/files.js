@@ -1110,7 +1110,7 @@ function(e) {
 			})
 		}
 	}
-	_c.check_updates && (S("files:updated") ? (S("files:updated", !0), Z("updated", 0, '<div data-dismiss="modal">' + E.get_svg("check") + "&nbsp; 已成功更新到 <strong>版本 " + _c.version + "</strong>。</div>")) : q({
+	_c.check_updates && (S("files:updated") ? (S("files:updated", !0), Z("updated", 0, '<div data-dismiss="modal">' + E.get_svg("check") + "&nbsp; 已成功更新 <strong>版本 " + _c.version + "</strong>。</div>")) : q({
 		json_response: !0,
 		params: "action=check_updates",
 		complete: function(e, t, i) {
@@ -1128,7 +1128,7 @@ function(e) {
 							l.disabled = e, l.style.opacity = e ? .8 : 1, l.innerText = G(t)
 						}
 						b(l, (function() {
-							confirm("您确定要更新到新版本 " + a + "吗？") && (p(!0, "更新中..."), q({
+							confirm("您确定要更新到新版本 " + a + " 吗？") && (p(!0, "更新中..."), q({
 								params: "action=do_update&version=" + a,
 								json_response: !0,
 								complete: function(e, t, i) {
