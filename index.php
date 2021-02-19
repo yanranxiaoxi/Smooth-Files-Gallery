@@ -89,7 +89,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.0.3';
+  static $version = '0.0.4';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -256,7 +256,7 @@ function login_page($is_login_attempt, $sidx, $is_logout, $client_hash){
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no, shrink-to-fit=no" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Login</title>
-    <link href="<?php echo config::$assets ?>css/files.css" rel="stylesheet" />
+    <link href="<?php echo config::$assets ?>css/files.min.css" rel="stylesheet" />
     <?php custom_script('css'); ?>
   </head>
   <body><div id="files-login-container"></div></body>
@@ -1360,7 +1360,7 @@ header('Files-Msg: [' . header_memory_time() . ']');
     <meta name="robots" content="noindex, nofollow" />
     <title><?php echo $init_path ? basename($init_path) : '/'; ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css" />
-    <link href="<?php echo config::$assets ?>css/files.css" rel="stylesheet" />
+    <link href="<?php echo config::$assets ?>css/files.min.css" rel="stylesheet" />
     <?php custom_script('css'); ?>
   </head>
 
@@ -1429,7 +1429,7 @@ var CodeMirror = {};
     <!-- custom -->
     <?php custom_script('js'); ?>
     <!-- files -->
-    <script src="<?php echo config::$assets ?>js/files.js"></script>
+    <script src="<?php echo config::$assets ?>js/files.min.js"></script>
 
   </body>
 </html>
