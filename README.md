@@ -36,5 +36,4 @@
 
 用于开源项目及公益组织使用可发送邮件请求获取免费的使用授权。
 
-基于 [MIT License](https://opensource.org/licenses/MIT) 许可进行开源。但请知悉，未获取永久使用授权的个人、团体 **不属于** 许可的开源对象。
-
+基于 [MIT License](https://choosealicense.com/licenses/mit/) 许可进行开源。但请知悉，未获取永久使用授权的个人、团体 **不属于** 许可的开源对象。
