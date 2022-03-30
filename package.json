@@ -1,0 +1,25 @@
+{
+  "name": "smooth.files.gallery",
+  "version": "0.1.0",
+  "description": "Single-file PHP file gallery and file manager",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery.git"
+  },
+  "keywords": [
+    "php",
+    "single file",
+    "file viewer",
+    "file manager"
+  ],
+  "bugs": {
+    "url": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery/-/issues"
+  },
+  "author": "XiaoXi <admin@soraharu.com> (https://soraharu.com/)",
+  "license": "SEE LICENSE",
+  "homepage": "https://smoothfilesgallery.soraharu.com/"
+}
