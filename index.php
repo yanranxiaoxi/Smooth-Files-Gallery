@@ -111,7 +111,7 @@ class config {
     'video_autoplay' => true,
 
     // language
-    'lang_default' => 'en',
+    'lang_default' => 'zh',
     'lang_auto' => true,
   );
 
