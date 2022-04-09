@@ -372,3 +372,5 @@ if(tasks::$task === 'create_html'){
 header('files-msg: task [' . header_memory_time() . ']');
 if(!tasks::$output) error('No cache parameters selected [menu, folders, images, all]', 400);
 echo tasks::$output . '<br>-<br>Processed in ' . round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']), 2) . ' seconds.';
+
+
