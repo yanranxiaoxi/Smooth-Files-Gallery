@@ -1,6 +1,6 @@
 {
   "name": "smooth.files.gallery",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Single-file PHP file gallery and file manager",
   "main": "index.php",
   "scripts": {

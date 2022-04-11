@@ -123,7 +123,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.2.0';
+  static $version = '0.2.1';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -1089,6 +1089,17 @@ function get_files_data($dir, $url_path = false, &$dirsize = 0, &$files_count = 
             $image['width'] = $imagesize[1];
             $image['height'] = $imagesize[0];
           }
+        }
+
+        // panorama equirectangular if w/h === 2 / find resized panoramas '_files_{size}_{filename.jpg}'
+        if($item_url_path && $imagesize[0] && $imagesize[0] > 2048 && $imagesize[0]/$imagesize[1] === 2){
+          $panorama_resized = [];
+          // check for resizes if resize >= original
+          foreach ([2048, 4096, 8192] as $resize) {
+            if($resize >= $imagesize[0]) break;
+            if(file_exists($dir . '/_files_' . $resize . '_' . $filename)) $panorama_resized[] = $resize;
+          }
+          if(!empty($panorama_resized)) $item['panorama_resized'] = array_reverse($panorama_resized);
         }
 
         // image resize cache direct
