@@ -123,7 +123,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.2.2';
+  static $version = '0.2.3';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -245,7 +245,7 @@ class config {
     self::$config = array_replace(self::$default, $user_valid);
 
     // CDN assets
-    self::$assets = self::$prod ? 'https://fastly.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery@' . self::$version . '/' : '';
+    self::$assets = self::$prod ? 'https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@' . self::$version . '/' : '';
 
     // root
     self::$root = real_path(self::$config['root']);
@@ -1487,7 +1487,7 @@ if(post('action')){
   } else if($action === 'do_update'){
     $version = post('version');
     if(!$version || version_compare($version, config::$version) <= 0 || !is_writable(__FILE__)) json_error(); // requirements
-    $get = @file_get_contents('https://fastly.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery@' . $version . '/index.php');
+    $get = @file_get_contents('https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@' . $version . '/index.php');
     if(empty($get) || strpos($get, '<?php') !== 0) json_error(); // basic validation
     json_success(array('success' => @file_put_contents(__FILE__, $get)));
 
@@ -1895,21 +1895,21 @@ header('files-msg: [' . header_memory_time() . ']');
     <?php get_include('include/footer.html'); ?>
 
     <!-- Javascript -->
-    <script src="https://fastly.jsdelivr.net/npm/sweetalert2@11.4.5/dist/sweetalert2.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/@exeba/list.js@2.3.1/dist/list.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/yall-js@3.2.0/dist/yall.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/filesize@8.0.7/lib/filesize.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/screenfull@5.2.0/dist/screenfull.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/dayjs@1.11.0/dayjs.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/dayjs@1.11.0/plugin/localizedFormat.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/dayjs@1.11.0/plugin/relativeTime.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js"></script>
+    <script src="https://cdn.staticfile.org/limonte-sweetalert2/11.4.5/sweetalert2.min.js"></script>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.staticfile.org/list.js/2.3.1/list.min.js"></script>
+    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo $version; ?>/js/yall.min.js"></script>
+    <script src="https://cdn.staticfile.org/filesize/8.0.7/filesize.min.js"></script>
+    <script src="https://cdn.staticfile.org/screenfull.js/5.2.0/screenfull.min.js"></script>
+    <script src="https://cdn.staticfile.org/dayjs/1.11.0/dayjs.min.js"></script>
+    <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/localizedFormat.min.js"></script>
+    <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/relativeTime.min.js"></script>
+    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo $version; ?>/js/js-file-downloader.min.js"></script>
     <script>
 var _c = <?php echo json_encode($json_config, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_PARTIAL_OUTPUT_ON_ERROR); ?>;
 var CodeMirror = {};
     </script>
-    <script src="https://fastly.jsdelivr.net/npm/codemirror@5.65.2/mode/meta.js"></script>
+    <script src="https://cdn.staticfile.org/codemirror/5.65.2/mode/meta.min.js"></script>
     <!-- custom -->
     <?php get_include('js/custom.js'); ?>
     <!-- files -->
