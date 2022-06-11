@@ -123,7 +123,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.2.5';
+  static $version = '0.3.0';
   static $root;
   static $doc_root;
   static $has_login = false;
