@@ -123,7 +123,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.2.3';
+  static $version = '0.2.4';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -1898,13 +1898,13 @@ header('files-msg: [' . header_memory_time() . ']');
     <script src="https://cdn.staticfile.org/limonte-sweetalert2/11.4.5/sweetalert2.min.js"></script>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdn.staticfile.org/list.js/2.3.1/list.min.js"></script>
-    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo $version; ?>/js/yall.min.js"></script>
+    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version; ?>/npm/yall-js@3.2.0/dist/yall.min.js"></script>
     <script src="https://cdn.staticfile.org/filesize/8.0.7/filesize.min.js"></script>
     <script src="https://cdn.staticfile.org/screenfull.js/5.2.0/screenfull.min.js"></script>
     <script src="https://cdn.staticfile.org/dayjs/1.11.0/dayjs.min.js"></script>
     <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/localizedFormat.min.js"></script>
     <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/relativeTime.min.js"></script>
-    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo $version; ?>/js/js-file-downloader.min.js"></script>
+    <script src="https://jsdelivr.cdn.soraharu.com/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version; ?>/npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js"></script>
     <script>
 var _c = <?php echo json_encode($json_config, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_PARTIAL_OUTPUT_ON_ERROR); ?>;
 var CodeMirror = {};
