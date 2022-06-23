@@ -2,6 +2,8 @@
 
 ⭐ 以最省心的方式搭建文件共享库 ⭐
 
+[![jsDelivr](https://data.jsdelivr.com/v1/package/gh/yanranxiaoxi/Smooth-Files-Gallery/badge?style=rounded)](https://www.jsdelivr.com/package/gh/yanranxiaoxi/Smooth-Files-Gallery)
+
 ## ✨ 特性
 
 - 1️⃣ 单个文件，只需将它放入服务器上的任何目录中
