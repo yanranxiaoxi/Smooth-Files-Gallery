@@ -3,7 +3,7 @@
 /*
 This PHP file is only 10% of the application, used only to connect with the file system. 90% of the codebase, including app logic, interface, design and layout is managed by the app Javascript and CSS files. */
 
-// so that basename() and other functions work correctly on multi-
+// so that basename() and other functions work correctly on multi-byte strings.
 setlocale(LC_ALL,'en_US.UTF-8');
 
 // config
@@ -59,7 +59,7 @@ class config {
 
     // cache
     'cache' => true,
-    'cache_key' => 6,
+    'cache_key' => 0,
     'storage_path' => '_files',
 
     // exclude files directories regex
@@ -123,7 +123,7 @@ class config {
   static $__file__ = __FILE__;
   static $assets;
   static $prod = true;
-  static $version = '0.3.1';
+  static $version = '0.3.2';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -157,7 +157,7 @@ class config {
     error_reporting(E_ALL);
 
     // BASIC DIAGNOSTICS
-    echo '<!doctype html><html><head><title>程序检查系统和配置。</title><meta name="robots" content="noindex,nofollow"><style>body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; color: #444;line-height:1.6;margin:0 auto;max-width:700px}.container{background-color:#F3F3F3;padding:.5vw 2vw 2vw;border-radius:3px;margin:1vw;overflow:scroll}.test:before{display:inline-block;width:18px;text-align:center;margin-right:5px}.neutral:before{color:#BBB}.success:before{color:#78a642}.success:before,.neutral:before{content:"\2713"}.fail:before{content:"\2716";color:firebrick}</style></head><body><div class="container"><h2>Smooth Files Gallery ' . config::$version . '</h2><div style="margin:-1rem 0 .5rem">' . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] . '<br>' : '') . 'PHP ' . phpversion() . '<br>' . (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '') . '<p><i>* 以下测试仅用于帮助诊断特定于功能的问题。</i></p></div>';
+    echo '<!doctype html><html><head><title>检查系统和配置。</title><meta name="robots" content="noindex,nofollow"><style>body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; color: #444;line-height:1.6;margin:0 auto;max-width:700px}.container{background-color:#F3F3F3;padding:.5vw 2vw 2vw;border-radius:3px;margin:1vw;overflow:scroll}.test:before{display:inline-block;width:18px;text-align:center;margin-right:5px}.neutral:before{color:#BBB}.success:before{color:#78a642}.success:before,.neutral:before{content:"\2713"}.fail:before{content:"\2716";color:firebrick}</style></head><body><div class="container"><h2>Smooth Files Gallery ' . config::$version . '</h2><div style="margin:-1rem 0 .5rem">' . (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] . '<br>' : '') . 'PHP ' . phpversion() . '<br>' . (isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '') . '<p><i>* 以下测试仅用于帮助诊断特定于功能的问题。</i></p></div>';
     // prop output helper
     function prop($name, $success = 'neutral', $val = false){
       return '<div class="test ' . (is_bool($success) ? ($success ? 'success' : 'fail') : $success) . '">'. $name . ($val ? ': <b>' . $val . '</b>' : '') . '</div>';
@@ -170,7 +170,7 @@ class config {
     exists_writeable(config::$config['storage_path'], 'storage_path');
     if((file_exists(config::$config['root']) && !is_writable(config::$config['root'])) || (file_exists(config::$config['storage_path']) && !is_writable(config::$config['storage_path']))) exists_writeable(__FILE__, _basename(__FILE__));
     // extension_loaded
-    if(function_exists('extension_loaded')) foreach (['gd', 'exif'] as $name) echo prop($name, extension_loaded($name));
+    if(function_exists('extension_loaded')) foreach (['gd', 'exif', 'mbstring'] as $name) echo prop($name, extension_loaded($name));
     // zip
     echo prop('ZipArchive', class_exists('ZipArchive'));
     // function_exsists
@@ -611,7 +611,7 @@ function get_file($path, $resize = false){
 
     // get FFmpeg path `video_ffmpeg_path` / checks `exec('ffmpeg -version')`
     $ffmpeg_path = get_ffmpeg_path();
-    if(!$ffmpeg_path) error('<a href="http://ffmpeg.org/" target="_blank">FFmpeg</a> 已禁用。检查你的 <a href="' . _basename(__FILE__) . '?check=1" target="_blank">diagnostics</a>.', 400);
+    if(!$ffmpeg_path) error('<a href="https://ffmpeg.org/" target="_blank">FFmpeg</a> 已禁用。检查你的 <a href="' . _basename(__FILE__) . '?check=1" target="_blank">诊断页</a>。', 400);
 
     // ffmpeg command
     $cmd = $ffmpeg_path . ' -ss 3 -t 1 -hide_banner -i "' . str_replace('"', '\"', $path) . '" -frames:v 1 -an -vf "thumbnail,scale=480:320:force_original_aspect_ratio=increase,crop=480:320" -r 1 -y -f mjpeg "' . $cache . '" 2>&1';
@@ -1415,7 +1415,7 @@ if(post('action')){
     // new_folder || new_file
     } else if($task === 'new_folder' || $task === 'new_file'){
       if(!$is_dir) json_error('无效的目录 ' . $post_path); // parent path must be dir
-      if(!is_writable($path)) json_error($post_path . ' 不可写'); // dir must be writeable
+      if(!is_writable($path)) json_error($post_path . ' 不可写。'); // dir must be writeable
       $name = name_is_allowed(post('name')); // trim and check valid
       $file_path = $path . '/' . $name;
       if(file_exists($file_path)) json_error($name . ' 已存在');
@@ -1435,10 +1435,10 @@ if(post('action')){
     } else if($task === 'duplicate'){
       if($is_dir) json_error('无法复制目录');
       $parent_dir = dirname($path);
-      if(!is_writable($parent_dir)) json_error(basename($parent_dir) . ' 不可写'); // dir must be writeable
+      if(!is_writable($parent_dir)) json_error(basename($parent_dir) . ' 不可写。'); // dir must be writeable
       $name = name_is_allowed(post('name')); // trim and check valid
       $copy_path = $parent_dir . '/' . $name;
-      if(file_exists($copy_path)) json_error($name . ' 已存在');
+      if(file_exists($copy_path)) json_error($name . ' 已存在。');
       fm_json_toggle(@copy($path, $copy_path), 'PHP copy() 失败');
     
     // text / code edit
@@ -1895,21 +1895,21 @@ header('files-msg: [' . header_memory_time() . ']');
     <?php get_include('include/footer.html'); ?>
 
     <!-- Javascript -->
-    <script src="https://cdn.staticfile.org/limonte-sweetalert2/11.4.5/sweetalert2.min.js"></script>
-    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdn.staticfile.org/list.js/2.3.1/list.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version; ?>/npm/yall-js@3.2.0/dist/yall.min.js"></script>
-    <script src="https://cdn.staticfile.org/filesize/8.0.7/filesize.min.js"></script>
-    <script src="https://cdn.staticfile.org/screenfull.js/5.2.0/screenfull.min.js"></script>
-    <script src="https://cdn.staticfile.org/dayjs/1.11.0/dayjs.min.js"></script>
-    <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/localizedFormat.min.js"></script>
-    <script src="https://cdn.staticfile.org/dayjs/1.11.0/plugin/relativeTime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version; ?>/npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.5/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@exeba/list.js@2.3.1/dist/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/yall-js@3.2.0/dist/yall.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/filesize@8.0.7/lib/filesize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/screenfull@5.2.0/dist/screenfull.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/plugin/localizedFormat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/plugin/relativeTime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js"></script>
     <script>
 var _c = <?php echo json_encode($json_config, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_PARTIAL_OUTPUT_ON_ERROR); ?>;
 var CodeMirror = {};
     </script>
-    <script src="https://cdn.staticfile.org/codemirror/5.65.2/mode/meta.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/meta.js"></script>
     <!-- custom -->
     <?php get_include('js/custom.js'); ?>
     <!-- files -->

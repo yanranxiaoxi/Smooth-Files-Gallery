@@ -1,6 +1,6 @@
 <?php 
 
-// CONFIG / https://smoothfilesgallery.soraharu.com/docs/config/
+// CONFIG / https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery/-/blob/master/README.md
 // Uncomment the parameters you want to edit.
 return array (
   //'root' => '',
@@ -19,12 +19,12 @@ return array (
   //'image_resize_quality' => 85,
   //'image_resize_function' => 'imagecopyresampled',
   //'image_resize_sharpen' => true,
-  'image_resize_memory_limit' => 1024,
-  'image_resize_max_pixels' => 0,
+  //'image_resize_memory_limit' => 128,
+  //'image_resize_max_pixels' => 30000000,
   //'image_resize_min_ratio' => 1.5,
   //'image_resize_cache_direct' => false,
   //'folder_preview_image' => true,
-  'folder_preview_default' => '_view.jpg',
+  //'folder_preview_default' => '_filespreview.jpg',
   //'menu_enabled' => true,
   //'menu_show' => true,
   //'menu_max_depth' => 5,
@@ -37,17 +37,17 @@ return array (
   //'sort_dirs_first' => true,
   //'sort_function' => 'locale',
   //'cache' => true,
-  'cache_key' => 0,
+  //'cache_key' => 0,
   //'storage_path' => '_files',
-  'files_exclude' => '/(_hidden|^\\.|^index.php$|^_view.jpg$)/i',
+  //'files_exclude' => '',
   //'dirs_exclude' => '',
   //'allow_symlinks' => true,
   //'title' => '%name% [%count%]',
   //'history' => true,
   //'transitions' => true,
   //'click' => 'popup',
-  'click_window' => 'pdf',
-  'click_window_popup' => true,
+  //'click_window' => '',
+  //'click_window_popup' => true,
   //'code_max_load' => 100000,
   //'topbar_sticky' => 'scroll',
   //'check_updates' => false,
