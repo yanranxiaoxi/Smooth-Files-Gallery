@@ -84,8 +84,9 @@ class config {
     'license_key' => '',
     'filter_live' => true,
     'filter_props' => 'name, filetype, mime, features, title',
-    'download_dir' => 'zip',
+    'download_dir' => 'browser',
     'download_dir_cache' => 'dir',
+    'assets' => '',
 
     // filemanager options
     'allow_upload' => false,
@@ -108,7 +109,6 @@ class config {
     // video
     'video_thumbs' => true,
     'video_ffmpeg_path' => 'ffmpeg',
-    'video_autoplay' => true,
 
     // language
     'lang_default' => 'zh',
@@ -121,9 +121,7 @@ class config {
   // app vars
   static $__dir__ = __DIR__;
   static $__file__ = __FILE__;
-  static $assets;
-  static $prod = true;
-  static $version = '0.3.2';
+  static $version = '0.3.3';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -138,6 +136,7 @@ class config {
   static $local_config_file = '_filesconfig.php';
   static $username = false;
   static $password = false;
+  static $assets;
 
   // get config
   private function get_config($path) {
@@ -244,9 +243,6 @@ class config {
     $user_valid = array_intersect_key($user_config, self::$default);
     self::$config = array_replace(self::$default, $user_valid);
 
-    // CDN assets
-    self::$assets = self::$prod ? 'https://cdn.jsdelivr.net/gh/yanranxiaoxi/Smooth-Files-Gallery@' . self::$version . '/' : '';
-
     // root
     self::$root = real_path(self::$config['root']);
 
@@ -311,6 +307,9 @@ class config {
     // dirs hash
     self::$dirs_hash = substr(md5(self::$doc_root . self::$__dir__ . self::$root . self::$version .  self::$config['cache_key'] . self::$image_resize_cache_direct . self::$config['files_exclude'] . self::$config['dirs_exclude']), 0, 6);
 
+    // Assign assets url for plugins/JS/CSS/languages, defaults to CDN
+    if($is_doc) self::$assets = empty(self::$config['assets']) ? 'https://cdn.jsdelivr.net/' : rtrim(self::$config['assets'], '/') . '/';
+
     // login
     if(self::$has_login) check_login($is_doc);
   }
@@ -326,7 +325,7 @@ function login_page($is_login_attempt, $sidx, $is_logout, $client_hash){
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no, shrink-to-fit=no">
     <meta name="robots" content="noindex,nofollow">
     <title>Login</title>
-    <link href="<?php echo config::$assets ?>css/files.css" rel="stylesheet">
+    <link href="<?php echo config::$assets ?>gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version ?>/css/files.min.css" rel="stylesheet">
     <?php get_include('css/custom.css'); ?>
   </head>
   <body><div id="files-login-container"></div></body>
@@ -362,15 +361,12 @@ function check_login($is_doc){
   if($is_doc && empty(config::$password)) error('密码不能为空。');
   if(session_status() === PHP_SESSION_NONE && !session_start() && $is_doc) error('无法调用 PHP session_start();', 500);
 
-  function get_client_hash(){
-    foreach(array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR') as $key){
-      if(isset($_SERVER[$key]) && !empty($_SERVER[$key]) && filter_var($_SERVER[$key], FILTER_VALIDATE_IP)) return md5($_SERVER[$key] . $_SERVER['HTTP_USER_AGENT'] . __FILE__ . $_SERVER['HTTP_HOST']);
-    }
-    error('无效的 IP', 401);
+  // [security] client hash and login hash
+  foreach(['HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR'] as $key){
+    $ip = isset($_SERVER[$key]) && !empty($_SERVER[$key]) ? explode(',', $_SERVER[$key])[0] : '';
+    if($ip && filter_var($ip, FILTER_VALIDATE_IP)) break;
   }
-
-  // hash
-  $client_hash = get_client_hash();
+  $client_hash = md5($ip . (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . __FILE__ . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
   $login_hash = md5(config::$username . config::$password . $client_hash);
 
   // login status
@@ -645,7 +641,7 @@ function get_file($path, $resize = false){
     if(!config::$config['load_files_proxy_php'] && is_within_docroot($path)) error('无法代理文件。', 400);
 
     // read file / $mime or 'application/octet-stream'
-    read_file($path, ($mime ?: 'application/octet-stream'), $msg = '文件 ' . basename($path) . ' 已代理。', false, true);
+    read_file($path, ($mime ?: 'application/octet-stream'), $msg = '文件 ' . _basename($path) . ' 已代理。', false, true);
   }
 }
 
@@ -813,12 +809,6 @@ function get_dir($path, $files = false, $json_url = false){
 
     // files array
     $arr['files'] = get_files_data($path, $url_path, $arr['dirsize'], $arr['files_count'], $arr['images_count'], $arr['preview']);
-
-    // download_dir cache direct access to zip / better caching and no need to access PHP / only works when download_dir_cache === 'dir'
-    /*if($url_path && config::$config['download_dir'] === 'zip' && config::$config['download_dir_cache'] === 'dir') {
-      $zip = $realpath . '/_files.zip';
-      if(file_exists($zip) && filemtime($zip) >= $filemtime) $arr['zip'] = get_url_path($zip);
-    }*/
   }
 
 	// json cache path
@@ -1127,6 +1117,14 @@ function get_files_data($dir, $url_path = false, &$dirsize = 0, &$files_count = 
           }
         }
       }
+
+    // read .URL shortcut files and present as links / https://fileinfo.com/extension/url
+    } else if($is_readable && $ext === 'url'){
+      $url_lines = @file($realpath);
+      if(!empty($url_lines) && is_array($url_lines)) foreach ($url_lines as $str) if(preg_match('/^url\s*=\s*([\S\s]+)/i', trim($str), $url_matches) && !empty($url_matches) && isset($url_matches[1])){
+        $item['url'] = $url_matches[1];
+        break;
+      }
     }
 
     // add to items with basename as key
@@ -1308,6 +1306,10 @@ if(post('action')){
     function fm_json_toggle($success, $error){
       fm_json_exit($success, array_filter(array('success' => $success, 'error' => empty($success) ? $error : 0)));
     }
+    // filemanager json_exit / includes feature to invalidate X3 cache if x3-plugin active
+    function fm_json_exit($success, $arr){
+      json_exit($arr);
+    }
 
     // UPLOAD
     if($task === 'upload'){
@@ -1440,7 +1442,7 @@ if(post('action')){
       $copy_path = $parent_dir . '/' . $name;
       if(file_exists($copy_path)) json_error($name . ' 已存在。');
       fm_json_toggle(@copy($path, $copy_path), 'PHP copy() 失败');
-    
+
     // text / code edit
     } else if($task === 'text_edit'){
       if($is_dir) json_error('无法将文本写入目录');
@@ -1551,7 +1553,7 @@ if(post('action')){
 
       // !no files available to zip
       if(empty($files)) error('没有需要压缩的文件！', 400);
-      
+
       // new ZipArchive
       $zip = new ZipArchive();
 
@@ -1810,7 +1812,7 @@ $json_config = array_replace($exclude, array(
   'qrx' => $wtc && is_string($wtc) ? substr(md5($wtc), 0, strlen($wtc)) : false,
   'video_thumbs_enabled' => !!get_ffmpeg_path(),
   'lang_custom' => lang_custom(),
-  'assets' => config::$assets
+  'assets' => config::$assets, // computed assets path
 ));
 
 // calculate bytes from PHP ini settings
@@ -1852,7 +1854,7 @@ header('files-msg: [' . header_memory_time() . ']');
     <meta name="robots" content="noindex,nofollow">
     <title><?php echo $init_path ? _basename($init_path) : '/'; ?></title>
     <?php get_include('include/head.html'); ?>
-    <link href="<?php echo config::$assets ?>css/files.min.css" rel="stylesheet">
+    <link href="<?php echo config::$assets ?>gh/yanranxiaoxi/Smooth-Files-Gallery@<?php echo config::$version ?>/css/files.min.css" rel="stylesheet">
     <?php get_include('css/custom.css'); ?>
   </head>
   <body class="body-loading"><svg viewBox="0 0 18 18" class="svg-preloader svg-preloader-active preloader-body"><circle cx="9" cy="9" r="8" pathLength="100" class="svg-preloader-circle"></svg>
@@ -1895,25 +1897,33 @@ header('files-msg: [' . header_memory_time() . ']');
     <?php get_include('include/footer.html'); ?>
 
     <!-- Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.5/dist/sweetalert2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@exeba/list.js@2.3.1/dist/list.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/yall-js@3.2.0/dist/yall.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/filesize@8.0.7/lib/filesize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/screenfull@5.2.0/dist/screenfull.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/plugin/localizedFormat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/plugin/relativeTime.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js"></script>
     <script>
 var _c = <?php echo json_encode($json_config, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_PARTIAL_OUTPUT_ON_ERROR); ?>;
 var CodeMirror = {};
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/meta.js"></script>
-    <!-- custom -->
-    <?php get_include('js/custom.js'); ?>
-    <!-- files -->
-    <script src="<?php echo config::$assets ?>js/files.min.js"></script>
+    <?php
+
+    // load _files/js/custom.js if exists
+    get_include('js/custom.js');
+
+    // load all Javascript assets
+    foreach (array_filter([
+      'npm/sweetalert2@11.4.23/dist/sweetalert2.min.js',
+      'npm/animejs@3.2.1/lib/anime.min.js',
+      'npm/@exeba/list.js@2.3.1/dist/list.min.js',
+      'npm/yall-js@3.2.0/dist/yall.min.js',
+      'npm/filesize@9.0.11/lib/filesize.min.js',
+      'npm/screenfull@5.2.0/dist/screenfull.min.js',
+      'npm/dayjs@1.11.4/dayjs.min.js',
+      'npm/dayjs@1.11.4/plugin/localizedFormat.js',
+      'npm/dayjs@1.11.4/plugin/relativeTime.js',
+      (in_array(config::$config['download_dir'], ['zip', 'files']) ? 'npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js' : false),
+      (config::$config['download_dir'] === 'browser' ? 'npm/jszip@3.10.1/dist/jszip.min.js' : false),
+      (config::$config['download_dir'] === 'browser' ? 'npm/file-saver@2.0.5/dist/FileSaver.min.js' : false),
+      'npm/codemirror@5.65.6/mode/meta.js',
+      'gh/yanranxiaoxi/Smooth-Files-Gallery@' . config::$version . '/js/files.min.js'
+    ]) as $key) echo '<script src="' . config::$assets . $key . '"></script>';
+    ?>
 
   </body>
 </html>
