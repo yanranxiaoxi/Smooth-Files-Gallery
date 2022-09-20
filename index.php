@@ -121,7 +121,7 @@ class config {
   // app vars
   static $__dir__ = __DIR__;
   static $__file__ = __FILE__;
-  static $version = '0.3.4';
+  static $version = '0.3.5';
   static $root;
   static $doc_root;
   static $has_login = false;
@@ -1908,15 +1908,15 @@ var CodeMirror = {};
 
     // load all Javascript assets
     foreach (array_filter([
-      'npm/sweetalert2@11.4.23/dist/sweetalert2.min.js',
+      'npm/sweetalert2@11.4.26/dist/sweetalert2.min.js',
       'npm/animejs@3.2.1/lib/anime.min.js',
       'npm/@exeba/list.js@2.3.1/dist/list.min.js',
       'npm/yall-js@3.2.0/dist/yall.min.js',
       'npm/filesize@9.0.11/lib/filesize.min.js',
       'npm/screenfull@5.2.0/dist/screenfull.min.js',
-      'npm/dayjs@1.11.4/dayjs.min.js',
-      'npm/dayjs@1.11.4/plugin/localizedFormat.js',
-      'npm/dayjs@1.11.4/plugin/relativeTime.js',
+      'npm/dayjs@1.11.5/dayjs.min.js',
+      'npm/dayjs@1.11.5/plugin/localizedFormat.js',
+      'npm/dayjs@1.11.5/plugin/relativeTime.js',
       (in_array(config::$config['download_dir'], ['zip', 'files']) ? 'npm/js-file-downloader@1.1.24/dist/js-file-downloader.min.js' : false),
       (config::$config['download_dir'] === 'browser' ? 'npm/jszip@3.10.1/dist/jszip.min.js' : false),
       (config::$config['download_dir'] === 'browser' ? 'npm/file-saver@2.0.5/dist/FileSaver.min.js' : false),

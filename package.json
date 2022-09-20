@@ -1,6 +1,6 @@
 {
   "name": "smooth.files.gallery",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Single-file PHP file gallery and file manager",
   "main": "index.php",
   "scripts": {
@@ -14,7 +14,8 @@
     "php",
     "single file",
     "file viewer",
-    "file manager"
+    "file manager",
+    "file gallery"
   ],
   "bugs": {
     "url": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery/-/issues"
