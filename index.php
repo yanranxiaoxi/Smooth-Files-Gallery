@@ -121,7 +121,7 @@ class config {
   // app vars
   static $__dir__ = __DIR__;
   static $__file__ = __FILE__;
-  static $version = '0.3.5';
+  static $version = '0.3.6';
   static $root;
   static $doc_root;
   static $has_login = false;
