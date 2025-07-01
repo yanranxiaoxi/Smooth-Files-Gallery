@@ -1,7 +1,7 @@
 FROM docker.io/library/php:8-apache
 WORKDIR /var/www/html
 COPY index.php .
-COPY --chmod=666 _files ./_files
+COPY --chown=1000:1000 _files ./_files
 COPY css ./css
 COPY js ./js
 COPY lang ./lang
