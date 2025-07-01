@@ -2,7 +2,7 @@
 
 ⭐ 以最省心的方式搭建文件共享库 ⭐
 
-[![jsDelivr](https://data.jsdelivr.com/v1/package/gh/yanranxiaoxi/Smooth-Files-Gallery/badge?style=rounded)](https://www.jsdelivr.com/package/gh/yanranxiaoxi/Smooth-Files-Gallery)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/smooth-files-gallery/badge?style=rounded)](https://www.jsdelivr.com/package/npm/smooth-files-gallery)
 
 ## ✨ 特性
 
