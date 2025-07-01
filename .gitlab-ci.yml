@@ -1,5 +1,6 @@
 stages:
   - build
+  - publish
 
 build-stable:
   stage: build
@@ -64,3 +65,19 @@ build-test:
     - docker tag $CONTAINER_IMAGE_NAME:test-$CI_COMMIT_SHORT_SHA $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:test-$CI_COMMIT_SHORT_SHA
     # 推送私有仓库
     - docker push $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:test-$CI_COMMIT_SHORT_SHA
+
+publish-npm:
+  stage: publish
+  tags:
+    - linux
+    - docker
+  image: docker.io/library/node:22
+  rules:
+  - if: $CI_COMMIT_TAG
+  before_script:
+    - npm config set '//registry.npmjs.org/:_authToken' "$NPM_TOKEN"
+  script:
+    # 压缩资源文件
+    - npm run assets:zip
+    # 发布到 NPM
+    - npm publish --access public

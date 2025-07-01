@@ -4,7 +4,7 @@
   "description": "Single-file PHP file gallery and file manager",
   "main": "index.php",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "assets:zip": "cd ./_files/assets/ && zip -9 ./assets.zip ./*"
   },
   "repository": {
     "type": "git",
