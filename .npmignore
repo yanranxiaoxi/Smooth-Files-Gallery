@@ -1,0 +1,5 @@
+/_files/assets/*
+!/_files/assets/assets.zip
+/_files/config/config.docker.php
+/.gitlab-ci.yml
+Dockerfile
