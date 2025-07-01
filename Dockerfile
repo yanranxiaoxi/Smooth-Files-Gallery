@@ -1,4 +1,4 @@
-FROM docker.mirror.soraharu.com/library/php:8-apache
+FROM docker.io/library/php:8-apache
 WORKDIR /var/www/html
 COPY index.php .
 COPY _files ./_files
