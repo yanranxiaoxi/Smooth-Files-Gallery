@@ -1,6 +1,6 @@
 {
-  "name": "smooth.files.gallery",
-  "version": "0.3.6",
+  "name": "smooth-files-gallery",
+  "version": "0.4.0",
   "description": "Single-file PHP file gallery and file manager",
   "main": "index.php",
   "scripts": {
@@ -15,12 +15,12 @@
     "single file",
     "file viewer",
     "file manager",
-    "file gallery"
+    "photo gallery"
   ],
   "bugs": {
     "url": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery/-/issues"
   },
-  "author": "XiaoXi <admin@soraharu.com> (https://soraharu.com/)",
-  "license": "SEE LICENSE",
-  "homepage": "https://smoothfilesgallery.soraharu.com/"
+  "author": "XiaoXi <admin@soraharu.com>",
+  "license": "MIT",
+  "homepage": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery"
 }

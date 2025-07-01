@@ -2,7 +2,7 @@
 
 ⭐ 以最省心的方式搭建文件共享库 ⭐
 
-[![jsDelivr](https://data.jsdelivr.com/v1/package/gh/yanranxiaoxi/Smooth-Files-Gallery/badge?style=rounded)](https://www.jsdelivr.com/package/gh/yanranxiaoxi/Smooth-Files-Gallery) [![OSCS Status](https://www.oscs1024.com/platform/badge/yanranxiaoxi/Smooth-Files-Gallery.svg?size=small)](https://www.oscs1024.com/project/yanranxiaoxi/Smooth-Files-Gallery?ref=badge_small)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/gh/yanranxiaoxi/Smooth-Files-Gallery/badge?style=rounded)](https://www.jsdelivr.com/package/gh/yanranxiaoxi/Smooth-Files-Gallery)
 
 ## ✨ 特性
 
@@ -26,16 +26,16 @@
 - PHP 插件
   - 启用 PHP [GD](https://www.php.net/manual/book.image.php) 拓展以调整图像大小
   - 启用 PHP [EXIF](https://www.php.net/manual/book.exif.php) 拓展以读取图像数据
-  - PHP iptcparse() 读取图像 IPTC 元数据
-  - PHP ZipArchive 用于在下载文件夹中的所有文件时压缩存档
-  - PHP mime_content_type() 或 finfo_file() 来获取服务器上的文件 MIME 类型（安全性）
-  - PHP exif_imagetype() 来验证上传的图像（安全性）
-  - PHP session_start() 并正确配置了登录机制 session_save_path
-  - PHP ini_get() 和 ini_set() 用于各种功能
-  - FFmpeg 命令行工具以及用于视频缩略图的 PHP exec()
-  - 足够的 PHP memory_limit 来调整图像大小
-  - PHP file_uploads 启用了上传机制
-  - PHP upload_max_filesize 与最大文件上传大小匹配
+  - PHP `iptcparse()` 读取图像 IPTC 元数据
+  - PHP `ZipArchive` 用于在下载文件夹中的所有文件时压缩存档
+  - PHP `mime_content_type()` 或 `finfo_file()` 来获取服务器上的文件 MIME 类型（安全性）
+  - PHP `exif_imagetype()` 来验证上传的图像（安全性）
+  - PHP `session_start()` 并正确配置了 `session_save_path` 登录机制
+  - PHP `ini_get()` 和 `ini_set()` 用于各种功能
+  - FFmpeg 命令行工具以及用于视频缩略图的 PHP `exec()`
+  - 足够的 PHP `memory_limit` 来调整图像大小
+  - PHP `file_uploads` 启用了上传机制
+  - PHP `upload_max_filesize` 与最大文件上传大小匹配
   - PHP [mbstring](https://www.php.net/manual/book.mbstring.php)，用于包含具有多字节字符编码的元数据的图像
 - 支持所有 **现代浏览器**（无法在 Internet Explorer 上运行）
 - 虽然本应用是本地的单个文件，但它仍然需要 **互联网连接** 以从 CDN 加载 JavaScript 与 CSS
@@ -53,7 +53,7 @@
 
 商业用途企业需支付 **[$100]** 以获取永久使用授权。
 
-用于开源项目及公益组织可暂时使用以下授权码：
+用于开源项目及公益组织可使用以下授权码：
 
 ```
 F1-3DOE-FKI4-JMQM-JHUT-1SVV-G0J1
