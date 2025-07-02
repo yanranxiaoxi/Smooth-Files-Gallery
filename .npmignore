@@ -1,7 +1,9 @@
 /_files/assets/*
 !/_files/assets/assets.zip
 /node_modules/
+/.dockerignore
 /.gitlab-ci.yml
 /.jsziprc.json
 /Dockerfile
 /index.docker.php
+/package-lock.json
