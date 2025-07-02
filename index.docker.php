@@ -97,7 +97,7 @@ class Config {
     'allow_mass_copy_links' => false,
     'allow_settings' => false,
     'allow_check_updates' => false,
-    'allow_tests' => true, // docker different
+    'allow_tests' => false, // docker different
     'allow_tasks' => false,
     'demo_mode' => false,
     'upload_allowed_file_types' => '',
@@ -114,7 +114,7 @@ class Config {
   ];
 
   // global application variables created on new Config()
-  public static $version = '0.4.1';   // Files Gallery version
+  public static $version = '0.4.2';   // Files Gallery version
   public static $config = [];         // config array merged from _filesconfig.php, config.php and default config
   public static $localconfigpath = '_filesconfig.php'; // optional config file in current dir, useful when overriding shared configs
   public static $localconfig = [];    // config array from localconfigpath
