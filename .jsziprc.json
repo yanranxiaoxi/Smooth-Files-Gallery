@@ -1,0 +1,7 @@
+{
+    "compressionLevel": 9,
+    "entries": ["./_files/assets/"],
+    "ignoreEntries": ["./_files/assets/assets.zip"],
+    "mode":"add",
+    "outputEntry": "./_files/assets/assets.zip"
+}

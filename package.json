@@ -4,7 +4,7 @@
   "description": "Single-file PHP file gallery and file manager",
   "main": "index.php",
   "scripts": {
-    "assets:zip": "cd ./_files/assets/ && zip -9 ./assets.zip ./*"
+    "zip": "jszip-cli"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   },
   "author": "XiaoXi <admin@soraharu.com>",
   "license": "MIT",
-  "homepage": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery"
+  "homepage": "https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery",
+  "devDependencies": {
+    "@ffflorian/jszip-cli": "^3.8.5"
+  }
 }
