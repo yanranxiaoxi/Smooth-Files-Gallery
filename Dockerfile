@@ -7,4 +7,4 @@ COPY js ./js
 COPY lang ./lang
 COPY _files/assets ./_files/assets
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN mkdir /var/www/files/ && chmod 0777 -R /var/www/files/ && chmod 0777 -R /var/www/html/_files/ && install-php-extensions gd exif zip && apt update && apt install -y ffmpeg && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN mkdir /var/www/files/ && chmod 0777 -R /var/www/files/ && chmod 0777 -R /var/www/html/_files/ && install-php-extensions gd exif zip && apt-get update && apt-get install -y ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
