@@ -49,7 +49,6 @@
 
 ```bash
 podman container run \
-    --cpu-shares=1024 \
     --detach \
     --name=files-gallery \
     --quiet \
