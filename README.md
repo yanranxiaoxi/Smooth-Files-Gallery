@@ -45,6 +45,26 @@
 1. 下载 [index.php](https://gitlab.soraharu.com/XiaoXi/Smooth-Files-Gallery/-/raw/master/index.php?inline=false) 并上传至服务器
 2. 你已经完成了部署的所有步骤，现在即可开始使用 😆
 
+## ⚙️ 容器部署
+
+```bash
+podman container run \
+    --cpu-shares=1024 \
+    --detach \
+    --name=files-gallery \
+    --quiet \
+    --replace \
+    --restart=always \
+    --tls-verify \
+    --volume=/dir/files-gallery/config/:/var/www/html/_files/config/ \
+    --volume=/dir/files-gallery/plugins/:/var/www/html/_files/plugins/ \
+    --volume=/dir/files-gallery/files/:/var/www/files/ \
+    --volume=/dir/files-gallery/cache/:/var/www/html/_files/cache/ \
+    docker.io/yanranxiaoxi/smooth-files-gallery:latest
+```
+
+请为 `/dir/files-gallery/config/` 和 `/dir/files-gallery/cache/` 目录赋予写入权限。如若希望使用文件上传功能，则 `/dir/files-gallery/files/` 目录也需要写入权限。
+
 ## 📜 开源许可
 
 本项目支持个人及非商业社会团体免费使用所有功能（不可删除授权窗口）。
