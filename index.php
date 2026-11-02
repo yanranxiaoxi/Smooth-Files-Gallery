@@ -1,6 +1,6 @@
 <?php
 
-/* Files Gallery 0.5.1
+/* Files Gallery 0.5.2
 ---
 This PHP file is only 10% of the application, used only to connect with the file system. 90% of the codebase, including app logic, interface, design and layout is managed by the app Javascript and CSS files.
 ---
@@ -115,7 +115,7 @@ class Config {
   ];
 
   // global application variables created on new Config()
-  public static $version = '0.5.1';  // Files Gallery version
+  public static $version = '0.5.2';  // Files Gallery version
   public static $config = [];         // config array merged from _filesconfig.php, config.php and default config
   public static $localconfigpath = '_filesconfig.php'; // optional config file in current dir, useful when overriding shared configs
   public static $localconfig = [];    // config array from localconfigpath
